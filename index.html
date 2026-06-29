@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vex Launcher Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Unified Animation Graphics Canvas Node -->
+    <canvas id="particleCanvas"></canvas>
+
+    <!-- Launcher Header Logo -->
+    <div class="launcher-logo">
+        <h1>Vex Launcher</h1>
+        <p>V1.8 Premium Suite Build</p>
+    </div>
+
+    <!-- Live Status Indicators -->
+    <div class="status-container">
+        <div class="status-badge">
+            <div class="indicator"></div>
+            <span>DC Invites: Active</span>
+        </div>
+        <div class="status-badge">
+            <div class="indicator"></div>
+            <span>EaglerPing: 24ms</span>
+        </div>
+        <div class="status-badge">
+            <div class="indicator"></div>
+            <span>Java Ping: 42ms</span>
+        </div>
+        <div class="status-badge">
+            <div class="indicator"></div>
+            <span>Mojang: Connected</span>
+        </div>
+    </div>
+
+    <!-- Main Content Layout Splits -->
+    <div class="main-dashboard-split">
+        
+        <!-- Left Sidebar Column: User & Server Analytics -->
+        <div class="dashboard-sidebar">
+            
+            <!-- User Profile Module Asset -->
+            <div class="sidebar-module profile-card-box">
+                <div class="avatar-placeholder">🎮</div>
+                <div class="profile-info-block">
+                    <h3 id="displayGamertag">Guest_Player</h3>
+                    <span class="rank-badge-display">Community Member</span>
+                </div>
+                <div class="profile-input-row-mini">
+                    <input type="text" id="usernameField" placeholder="Change profile tag...">
+                    <button onclick="updateGamertag()">Save</button>
+                </div>
+            </div>
+
+            <!-- Global Activity Tracker Asset -->
+            <div class="sidebar-module analytics-box">
+                <h4>📊 Network Overview</h4>
+                <div class="stat-line">
+                    <span>Active Hub Players:</span>
+                    <strong class="highlight-text">1,424 online</strong>
+                </div>
+                <div class="stat-line">
+                    <span>Active Server Load:</span>
+                    <strong class="highlight-text-green">Normal (12%)</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Core Dashboard Column -->
+        <div class="dashboard-core-content">
+            
+            <!-- Advanced Cosmetics Dashboard Panel -->
+            <div class="cosmetics-panel">
+                <h3>✨ Launcher Cosmetics Engine</h3>
+                
+                <div class="cosmetics-grid-panel">
+                    <div class="cosmetic-group">
+                        <label>Select Accent Theme Color:</label>
+                        <div class="theme-buttons">
+                            <button class="theme-btn active" id="btn-indigo" onclick="setTheme('indigo', '#6366f1')">Indigo Neon</button>
+                            <button class="theme-btn" id="btn-green" onclick="setTheme('green', '#10b981')">Matrix Green</button>
+                            <button class="theme-btn" id="btn-aqua" onclick="setTheme('aqua', '#06b6d4')">Aqua Cyber</button>
+                        </div>
+                    </div>
+
+                    <div class="cosmetic-group flex-row">
+                        <label>Auto RGB Chroma Wave:</label>
+                        <button class="toggle-btn" id="rgbToggleBtn" onclick="toggleRGBChroma()">OFF</button>
+                    </div>
+
+                    <div class="cosmetic-group">
+                        <label>Ambient Background FX Engine:</label>
+                        <div class="theme-buttons">
+                            <button class="theme-btn active" id="bg-cubes" onclick="setBackgroundFX('cubes')">Retro Cubes</button>
+                            <button class="theme-btn" id="bg-stars" onclick="setBackgroundFX('stars')">Starfield Space</button>
+                            <button class="theme-btn" id="bg-stealth" onclick="setBackgroundFX('stealth')">Static Stealth</button>
+                        </div>
+                    </div>
+
+                    <div class="cosmetic-group flex-row">
+                        <label>Cursor Trail System:</label>
+                        <button class="toggle-btn toggled" id="particleToggleBtn" onclick="toggleParticles()">ON</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Search Input -->
+            <div class="search-container">
+                <input type="text" id="clientSearch" class="search-bar" placeholder="Search clients or hubs (e.g. NexoMC, Tuff, BladeMC)..." onkeyup="filterClients()">
+            </div>
+
+            <!-- Clean Friend System Dashboard -->
+            <div class="friend-system-box">
+                <h3>My Squad & Friends (<span id="friendCount">0</span>)</h3>
+                <div class="friend-input-row">
+                    <input type="text" id="friendNameInput" placeholder="Enter friend's Minecraft username...">
+                    <button onclick="addFriend()">Add Friend</button>
+                </div>
+                <div class="friend-list-grid" id="friendListContainer"></div>
+            </div>
+
+            <!-- Live Proxy List Dashboard -->
+            <div class="ip-dashboard">
+                <h3>Featured Server Network Proxies</h3>
+                
+                <div class="ip-row">
+                    <div class="ip-info">
+                        <span class="indicator"></span>
+                        <strong>AArch PVP Network</strong>
+                        <span class="ip-address">wss://eagler.aarch.net/</span>
+                    </div>
+                    <button class="copy-btn" onclick="copyIp('wss://eagler.aarch.net/')">Copy Proxy</button>
+                </div>
+
+                <div class="ip-row">
+                    <div class="ip-info">
+                        <span class="indicator"></span>
+                        <strong>VanillaMC Hub</strong>
+                        <span class="ip-address">wss://vanillamc.xyz/play</span>
+                    </div>
+                    <button class="copy-btn" onclick="copyIp('wss://vanillamc.xyz/play')">Copy Proxy</button>
+                </div>
+            </div>
+            
+            <!-- Clients & Partners Interactive Grid Container -->
+            <div class="grid" id="clientsGrid">
+                
+                <!-- NexoMC Client -->
+                <a href="https://nexomc.org" target="_blank" class="card nexomc-card">
+                    <div>
+                        <div class="new-tag-badge">Highly Rated</div>
+                        <h2>NexoMC Client</h2>
+                        <p>Features robust connection tools and optimized client mechanics built for multiplayer gameplay.</p>
+                    </div>
+                    <button class="play-btn">Launch Client</button>
+                </a>
+
+                <!-- Partnered Server: BladeMC -->
+                <div class="card partner-card">
+                    <div>
+                        <div class="partner-badge">Partnered Network</div>
+                        <h2>BladeMC</h2>
+                        <p>Premium Eagler multiplayer community network hub.</p>
+                        <div class="server-ip-display">blademc.us</div>
+                    </div>
+                    <button class="play-btn" onclick="copyIp('blademc.us')">Copy Server IP</button>
+                </div>
+
+                <!-- Partnered Server: AceMC -->
+                <div class="card partner-card">
+                    <div>
+                        <div class="partner-badge">Partnered Network</div>
+                        <h2>AceMC</h2>
+                        <p>Competitive practice PvP matches and mini-games lobby.</p>
+                        <div class="server-ip-display">acemc.club</div>
+                    </div>
+                    <button class="play-btn" onclick="copyIp('acemc.club')">Copy Server IP</button>
+                </div>
+
+                <a href="https://modernclient.online" target="_blank" class="card">
+                    <div>
+                        <h2>Modern Client</h2>
+                        <p>High performance WASM-GC client setup.</p>
+                    </div>
+                    <button class="play-btn">Launch Client</button>
+                </a>
+
+                <a href="https://pixelclient.xyz" target="_blank" class="card">
+                    <div>
+                        <h2>Pixel Client</h2>
+                        <p>Custom optimizations and custom visual interface.</p>
+                    </div>
+                    <button class="play-btn">Launch Client</button>
+                </a>
+
+                <a href="https://tuffis.online" target="_blank" class="card">
+                    <div>
+                        <h2>Tuff Client</h2>
+                        <p>Stable connection and feature-rich client overlay.</p>
+                    </div>
+                    <button class="play-btn">Launch Client</button>
+                </a>
+
+                <a href="https://eaglercraft.net" target="_blank" class="card">
+                    <div>
+                        <h2>Resonant Client</h2>
+                        <p>Classic PvP client alternative with FPS boosts.</p>
+                    </div>
+                    <button class="play-btn">Launch Client</button>
+                </a>
+
+                <a href="https://eaglercraft.com" target="_blank" class="card">
+                    <div>
+                        <h2>Asper Client</h2>
+                        <p>Minimalist performance configuration layout.</p>
+                    </div>
+                    <button class="play-btn">Launch Client</button>
+                </a>
+
